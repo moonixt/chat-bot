@@ -1,16 +1,41 @@
-import { openai } from '@ai-sdk/openai';
-import { streamText } from 'ai';
+import OpenAI from "openai";
+import { NextResponse } from "next/server";
 
-// Allow streaming responses up to 30 seconds
-export const maxDuration = 30;
+const client = new OpenAI({ 
+  baseURL: "https://models.inference.ai.azure.com",
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  try {
+    // 1️⃣ Lê o corpo da requisição (o que o usuário digitou)
+    const { message } = await req.json();
 
-  const result = streamText({
-    model: openai('gpt-4o'),
-    messages,
-  });
+    // 2️⃣ Faz a requisição para a OpenAI com streaming ativado
+    const stream = await client.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: message }],
+      stream: true, // 🔥 Ativa o modo streaming
+    });
 
-  return result.toDataStreamResponse();
+    // 3️⃣ Cria um stream de resposta para o frontend
+    const encoder = new TextEncoder(); // Converte texto para bytes
+    const readableStream = new ReadableStream({
+      async start(controller) {
+        for await (const chunk of stream) {
+          // 🔄 Para cada parte da resposta recebida da OpenAI...
+          const content = chunk.choices[0]?.delta?.content || "";
+          controller.enqueue(encoder.encode(content)); // Envia para o frontend
+        }
+        controller.close(); // Finaliza o stream quando terminar
+      },
+    });
+
+    // 4️⃣ Retorna o stream para o frontend
+    return new Response(readableStream, {
+      headers: { "Content-Type": "text/plain" },
+    });
+  } catch (error) {
+    return NextResponse.json({ error: "Erro ao processar requisição" }, { status: 500 });
+  }
 }
