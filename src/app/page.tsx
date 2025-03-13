@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import Typical from 'react-typical'
 
 const Main = () => {
   const [inputValue, setInputValue] = useState("");
@@ -39,32 +41,55 @@ const Main = () => {
 
   return (
     <div>
-      <div className="bg-gray-100">
-        <h1 className="flex justify-center">Chat-Bot</h1>
+      <div className="bg-slate-950">
+        <h1 className="flex justify-center">Chat-Bot LMM </h1>
         <div className="flex justify-center items-center h-screen">
-          <Card className="bg-black text-white w-[600px] h-[800px]">
+          <Card className="bg-white text-black w-[800px] h-[900px]">
             <CardHeader className="flex justify-center items-center">
-              <CardTitle className="text-red-600 font-bold text-4xl">CHATBOT</CardTitle>
+              <CardTitle className="text-black font-bold text-4xl">CHATBOT 03mini-o</CardTitle>
               <CardDescription>First ChatBot created</CardDescription>
             </CardHeader>
             <CardContent className="pt-10">
               <ScrollArea className="h-[500px] overflow-y-auto">
-                <h1 className="pb-10 text-3xl text-blue-400">Olá! Eu sou o ChatBot, como posso te ajudar hoje?</h1>
-                <p className=" text-2xl ">{chatResult}</p>
+                <section>
+                  <Avatar className="flex items-top gap-4">
+                    
+                    <AvatarImage className="rounded-full w-10 h-10 " src="https://th.bing.com/th/id/OIP.tKMU6QA-pSQ8wxObPZpsdQHaHa?rs=1&pid=ImgDetMain"></AvatarImage>
+                    {/* <h1 className="pb-10 text-3xl text-white">Olá! Eu sou o ChatBot, como posso te ajudar hoje?</h1> */}
+
+                    <Typical className="text-2xl"
+                       steps={['Olá', 3000, 'Olá! Eu sou o ChatBot!', 3000]}
+                        loop={1}
+                        wrapper="p"
+                      
+                                />
+
+                  </Avatar>
+                  <Avatar className="flex items-center">
+                  <p className=" text-black  pt-10 px-10 ">
+                   <AvatarImage className="rounded-full h-10 w-10" src="https://th.bing.com/th/id/OIP.tKMU6QA-pSQ8wxObPZpsdQHaHa?rs=1&pid=ImgDetMain">
+                      
+                   </AvatarImage>
+
+                  
+                    {chatResult}
+                    </p>
+                    </Avatar>
+                  </section>  
               </ScrollArea>
             </CardContent>
             <CardFooter className="mt-auto">
               <form onSubmit={handleSubmit}>
                 <input
                   type="text"
-                  className="w-[450px] h-10 p-2 border-2 border-gray-300 rounded-lg"
+                  className="w-[650px] h-10 p-2 border-2 border-gray-300 rounded-lg"
                   placeholder="Digite uma mensagem"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   disabled={isLoading}
                 />
                 <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                   type="submit"
                   disabled={isLoading}
                 >
