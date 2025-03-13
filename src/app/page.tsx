@@ -44,9 +44,9 @@ const Main = () => {
       <div className="bg-slate-950">
         <h1 className="flex justify-center">Chat-Bot LMM </h1>
         <div className="flex justify-center items-center h-screen">
-          <Card className="bg-white text-black w-[800px] h-[900px]">
+          <Card className="bg-white  text-black w-[800px] h-[900px]">
             <CardHeader className="flex justify-center items-center">
-              <CardTitle className="text-black font-bold text-4xl">CHATBOT 03mini-o</CardTitle>
+              <CardTitle className="text-black font-bold text-4xl">CHATBOT 03mini-o gpt</CardTitle>
               <CardDescription>First ChatBot created</CardDescription>
             </CardHeader>
             <CardContent className="pt-10">
@@ -54,12 +54,12 @@ const Main = () => {
                 <section>
                   <Avatar className="flex items-top gap-4">
                     
-                    <AvatarImage className="rounded-full w-10 h-10 " src="https://th.bing.com/th/id/OIP.tKMU6QA-pSQ8wxObPZpsdQHaHa?rs=1&pid=ImgDetMain"></AvatarImage>
+                    <AvatarImage className="rounded-full w-10 h-10 " src="https://e7.pngegg.com/pngimages/1001/63/png-clipart-internet-bot-computer-icons-chatbot-sticker-electronics-face-thumbnail.png"></AvatarImage>
                     {/* <h1 className="pb-10 text-3xl text-white">Olá! Eu sou o ChatBot, como posso te ajudar hoje?</h1> */}
 
-                    <Typical className="text-2xl"
+                    <Typical className="text-2xl "
                        steps={['Olá', 3000, 'Olá! Eu sou o ChatBot!', 3000]}
-                        loop={1}
+                        loop={Infinity}
                         wrapper="p"
                       
                                 />
@@ -67,7 +67,7 @@ const Main = () => {
                   </Avatar>
                   <Avatar className="flex items-center">
                   <p className=" text-black  pt-10 px-10 ">
-                   <AvatarImage className="rounded-full h-10 w-10" src="https://th.bing.com/th/id/OIP.tKMU6QA-pSQ8wxObPZpsdQHaHa?rs=1&pid=ImgDetMain">
+                   <AvatarImage className="rounded-full h-10 w-10" src="https://e7.pngegg.com/pngimages/1001/63/png-clipart-internet-bot-computer-icons-chatbot-sticker-electronics-face-thumbnail.png">
                       
                    </AvatarImage>
 
