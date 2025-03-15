@@ -58,15 +58,15 @@ const Main = () => {
     <div className="flex flex-col items-center justify-center bg-slate-950 h-screen">
       <div>
         <h1 className="flex justify-center text-white">
-          Chat-Bot | Made by Derek Willian{" "}
+          Sofia | Made by Derek W.{" "}
         </h1>
         <div className="flex justify-center items-center">
           <Card className="bg-white text-black sm:w-[900px] sm:h-[900px]">
             <CardHeader className="flex justify-center items-center">
               <CardTitle className="text-black font-bold text-4xl">
-                CHATBOT
+                SOFIA
               </CardTitle>
-              <CardDescription>Modelo de teste V1</CardDescription>
+              <CardDescription>Modelo de teste V1 (sem memoria e contexto)</CardDescription>
             </CardHeader>
             <CardContent className="pt-10">
               <ScrollArea className="h-[650px] overflow-y-auto">
@@ -74,7 +74,7 @@ const Main = () => {
                   <Avatar className="flex items-top gap-4">
                     <AvatarImage
                       className="rounded-full w-10 h-10 border-4 border-red-300"
-                      src="https://e7.pngegg.com/pngimages/1001/63/png-clipart-internet-bot-computer-icons-chatbot-sticker-electronics-face-thumbnail.png"
+                      src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
                     ></AvatarImage>
                     {/* Componente TypeAnimation para exibir texto animado */}
                     <TypeAnimation
@@ -82,7 +82,7 @@ const Main = () => {
                       sequence={[
                         "Olá",
                         1000,
-                        "Olá! Eu sou o ChatBot!",
+                        "Olá! Eu sou a Sofia!",
                         1000,
                         "Como posso te ajudar?",
                         1000,
@@ -106,7 +106,7 @@ const Main = () => {
                             >
                               <AvatarImage
                                 className="rounded-full h-10 w-10 border-4 border-slate-300"
-                                src="https://e7.pngegg.com/pngimages/1001/63/png-clipart-internet-bot-computer-icons-chatbot-sticker-electronics-face-thumbnail.png"
+                                src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
                               ></AvatarImage>
                               <p>{result}</p>
                             </div>
@@ -116,7 +116,7 @@ const Main = () => {
                         <div className="flex items-center gap-2">
                           <AvatarImage
                             className="rounded-full h-10 w-10 border-4 border-blue-300"
-                            src="https://e7.pngegg.com/pngimages/1001/63/png-clipart-internet-bot-computer-icons-chatbot-sticker-electronics-face-thumbnail.png"
+                            src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
                           ></AvatarImage>
                           <p>{chatResult}</p>
                         </div>
