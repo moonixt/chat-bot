@@ -1,2 +1,7 @@
 @import "tailwindcss";
 
+
+body{
+    
+    font-family: Georgia, Times, serif;
+}

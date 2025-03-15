@@ -1,9 +1,9 @@
-import OpenAI from "openai";
-import { NextResponse } from "next/server";
+import OpenAI from "openai"; // Importa a biblioteca OpenAI
+import { NextResponse } from "next/server"; // Importa NextResponse do Next.js
 
-const client = new OpenAI({ 
-  baseURL: "https://models.inference.ai.azure.com",
-  apiKey: process.env.OPENAI_API_KEY,
+const client = new OpenAI({
+  baseURL: "https://models.inference.ai.azure.com", // URL base da API da OpenAI
+  apiKey: process.env.OPENAI_API_KEY, // Chave da API da OpenAI
 });
 
 export async function POST(req: Request) {
@@ -13,8 +13,8 @@ export async function POST(req: Request) {
 
     // 2️⃣ Faz a requisição para a OpenAI com streaming ativado
     const stream = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: message }],
+      model: "gpt-4o-mini", // Modelo utilizado para a geração de texto
+      messages: [{ role: "user", content: message }], // Mensagem do usuário
       stream: true, // 🔥 Ativa o modo streaming
     });
 
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       async start(controller) {
         for await (const chunk of stream) {
           // 🔄 Para cada parte da resposta recebida da OpenAI...
-          const content = chunk.choices[0]?.delta?.content || "";
+          const content = chunk.choices[0]?.delta?.content || ""; // Conteúdo da resposta
           controller.enqueue(encoder.encode(content)); // Envia para o frontend
         }
         controller.close(); // Finaliza o stream quando terminar
@@ -33,9 +33,12 @@ export async function POST(req: Request) {
 
     // 4️⃣ Retorna o stream para o frontend
     return new Response(readableStream, {
-      headers: { "Content-Type": "text/plain" },
+      headers: { "Content-Type": "text/plain" }, // Define o tipo de conteúdo como texto
     });
   } catch (error) {
-    return NextResponse.json({ error: "Erro ao processar requisição" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erro ao processar requisição" },
+      { status: 500 }
+    ); // Retorna erro em caso de falha
   }
 }
