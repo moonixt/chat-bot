@@ -16,6 +16,8 @@
     "ai": "^4.1.54",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.7",
+    "groq-sdk": "^0.16.0",
     "lucide-react": "^0.479.0",
     "next": "15.2.1",
     "openai": "^4.86.2",

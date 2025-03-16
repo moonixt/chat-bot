@@ -1,9 +1,17 @@
 import OpenAI from "openai"; // Importa a biblioteca OpenAI
 import { NextResponse } from "next/server"; // Importa NextResponse do Next.js
+import { config } from "dotenv";
+config();
+
+
+// 1️⃣ Cria um cliente para a API da OpenAI
 
 const client = new OpenAI({
-  baseURL: "https://models.inference.ai.azure.com", // URL base da API da OpenAI
-  apiKey: process.env.OPENAI_API_KEY, // Chave da API da OpenAI
+  // baseURL: "https://models.inference.ai.azure.com", // URL base da API da OpenAI
+  // apiKey: process.env.OPENAI_API_KEY, // Chave da API da OpenAI
+  baseURL: "https://api.groq.com/openai/v1",
+  apiKey: process.env.GROQ_API_KEY,
+  
 });
 
 export async function POST(req: Request) {
@@ -13,7 +21,8 @@ export async function POST(req: Request) {
 
     // 2️⃣ Faz a requisição para a OpenAI com streaming ativado
     const stream = await client.chat.completions.create({
-      model: "gpt-4o-mini", // Modelo utilizado para a geração de texto
+      // model: "gpt-4o-mini", // Modelo utilizado para a geração de texto
+        model: "llama-3.3-70b-versatile", 
       messages: [{ role: "user", content: message }], // Mensagem do usuário
       stream: true, // 🔥 Ativa o modo streaming
     });
