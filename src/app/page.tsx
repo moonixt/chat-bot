@@ -32,7 +32,7 @@ const Main = () => {
     setChatResult("");
   
     try {
-      const response = await fetch("http://127.0.0.1:7860/api/v1/run/8927368b-bfb6-4fc1-8431-8e10e9df368d?stream=false", {
+      const response = await fetch("http://127.0.0.1:7860/api/v1/run/8927368b-bfb6-4fc1-8431-8e10e9df368d?stream=true", {
         method: "POST",
         headers: {
           "Authorization": "Bearer <TOKEN>",
@@ -57,39 +57,79 @@ const Main = () => {
             "GroqModel-l81mn": {
               api_key: "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",
               base_url: "https://api.groq.com",
-              model_name: "llama-3.3-70b-versatile",
+              model_name: "llama3-8b-8192",
               temperature: 0.1,
               stream: true, // Se quiser stream, deve mudar a lógica abaixo
             },
           },
         }),
       });
-      if (!response.ok) {
-        throw new Error(`Erro na API: ${response.statusText}`);
-      }
-      const data = await response.json();
-      console.log("Resposta da API:", data);
-      console.log("Outputs recebidos:", data.outputs);
-
-
-      // Garante que `data.outputs` é um array válido
-      if (data.outputs && Array.isArray(data.outputs) && data.outputs.length > 0) {
-        const outputText =
-        data.outputs?.[0]?.outputs?.[0]?.results?.message?.text 
-        setChatResult(outputText);
-        setPrevResult((prev) => [...prev, outputText]);
-        setApiData(data); // Armazena a resposta da API no estado
-      } else {
-        console.error("Erro: A API não retornou um output válido.");
-        setChatResult("Erro: Nenhuma resposta válida recebida.");
-      }
-    } catch (error) {
-      console.error("Erro ao chamar a API:", error);
-      setChatResult("Erro ao processar a resposta.");
+        if (!response.ok) {
+      throw new Error(`Erro na API: ${response.statusText}`);
     }
 
-    setInputValue(""); // Limpar o input
-    setIsLoading(false);
+    const reader = response.body?.getReader();
+    if (!reader) {
+      throw new Error("Erro: A resposta não contém um corpo legível (ReadableStream)");
+    }
+
+    const decoder = new TextDecoder();
+    let accumulatedText = ""; // Texto acumulado da resposta
+    let partialLine = ""; // Linha parcial para processamento
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        // Decodifica o chunk atual
+        const chunk = decoder.decode(value, { stream: true });
+        
+        // Acumula o chunk no buffer de linha parcial
+        partialLine += chunk;
+        
+        // Divide o texto por quebras de linha para processar cada evento JSON
+        const lines = partialLine.split('\n');
+        
+        // A última linha pode estar incompleta
+        partialLine = lines.pop() || '';
+        
+        // Processa cada linha completa
+        for (const line of lines) {
+          if (line.trim() === '') continue; // Ignora linhas vazias
+          
+          try {
+            const event = JSON.parse(line);
+            
+            // Verifica se é um evento de token
+            if (event.event === "token" && event.data && event.data.chunk !== undefined) {
+              // Acumula o texto do token
+              accumulatedText += event.data.chunk;
+              
+              // Atualiza a UI em tempo real com o texto acumulado
+              setChatResult(accumulatedText);
+            }
+          } catch (e) {
+            console.error("Erro ao processar linha JSON:", line, e);
+          }
+        }
+      }
+      
+      // Quando terminar a leitura completa do stream, adiciona ao histórico
+      if (accumulatedText) {
+        setPrevResult(prev => [...prev, accumulatedText]);
+      }
+      
+    } catch (error) {
+      console.error("Erro ao processar stream:", error);
+    }
+
+  } catch (error) {
+    console.error("Erro ao processar stream:", error);
+  }
+
+  setInputValue(""); // Limpa o input
+  setIsLoading(false);
   };
 
   return (
