@@ -1,9 +1,9 @@
-import Chat from "@/components/Chat"
+import Ia from "@/components/Ia"
 
 const Main = () => {
   return (
-    <div>
-      <Chat />
+    <div className=" bg-black">
+      <Ia />
     </div>
   )
 }
